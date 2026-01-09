@@ -152,9 +152,9 @@ function Header() {
     const { tileAccentBorder } = useThemeClasses();
 
     return (
-        <header className={`flex flex-col md:flex-row justify-between items-start md:items-center py-6 border-b-4 ${tileAccentBorder} mb-6`}>
+        <header className={`flex flex-col md:flex-row justify-between items-start md:items-center border-b-4 ${tileAccentBorder} mb-6`}>
             {/* --- Header Start --- */}
-            <h1 className={`text-3xl items-center justify-center  font-extrabold  mb-4 md:mb-0`}>
+            <h1 className={`text-3xl items-center justify-center  font-extrabold  mb-2 md:mb-0`}>
                 MY-WORLD
             </h1>
             {/* --- Header End --- */}
