@@ -711,6 +711,20 @@ export default function App() {
         }
     };
 
+    // Normalize image URL stored in DB: if it's a filename, prefix with API_URL and proper uploads path.
+    const normalizeImage = (img, kind = 'art') => {
+        if (!img) return '';
+        if (typeof img !== 'string') return '';
+        const trimmed = img.trim();
+        if (!trimmed) return '';
+        if (trimmed.startsWith('http') || trimmed.startsWith('//')) return trimmed;
+        if (trimmed.startsWith('/')) return `${API_URL}${trimmed}`;
+        if (trimmed.includes('/uploads/')) return `${API_URL}/${trimmed.replace(/^\/*/, '')}`;
+        // Assume it's a filename
+        if (kind === 'profile') return `${API_URL}/uploads/profile/${trimmed}`;
+        return `${API_URL}/uploads/art/${trimmed}`;
+    };
+
     // Mock Loading
     useEffect(() => {
         const timer = setTimeout(() => setIsLoading(false), 800); 
@@ -731,7 +745,7 @@ export default function App() {
                 email: serverData.email || '',
                 github: serverData.github || '',
                 linkedin: serverData.linkedin || '',
-                profileImage: serverData.profileImage || '',
+                profileImage: normalizeImage(serverData.profileImage, 'profile') || '',
                 resumeUrl: serverData.resumeUrl || '',
             };
             setPortfolioData(mapped);
@@ -822,7 +836,7 @@ export default function App() {
                 id: art._id || art.id || generateId(), 
                 title: art.title,
                 type: art.type,
-                image: art.image
+                image: normalizeImage(art.image, 'art')
             }));
             setArtProjects(mapped);
         };
