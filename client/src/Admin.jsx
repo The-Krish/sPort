@@ -321,6 +321,7 @@ function ProjectForm({ initialData, onSaveSuccess, onCancel, setCollection }) {
 function ArtForm({ initialData, onSaveSuccess, onCancel, setCollection }) {
     const [formData, setFormData] = useState(initialData);
     const [statusMessage, setStatusMessage] = useState('');
+    const [useUrl, setUseUrl] = useState(false);
     const { inputClass, buttonSecondary, buttonPrimary } = useThemeClasses();
 
     const handleChange = (e) => {
@@ -377,34 +378,51 @@ function ArtForm({ initialData, onSaveSuccess, onCancel, setCollection }) {
             </div>
             <div className="flex flex-col">
                 <label className="text-sm font-semibold text-black mb-1">Art Photo</label>
-                <input 
-                    type="file" 
-                    name="image" 
-                    onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                            const uploadFile = async () => {
-                                const uploadFormData = new FormData();
-                                uploadFormData.append('artImage', file);
-                                const res = await fetch(`${API_URL}/upload/art`, {
-                                    method: 'POST',
-                                    body: uploadFormData
-                                });
-                                if (res.ok) {
-                                    const body = await res.json();
-                                    const uploadedUrl = (body && body.d && body.d.url) ? body.d.url : (body && body.url) ? body.url : null;
-                                    if (uploadedUrl) setFormData(prev => ({ ...prev, image: uploadedUrl })); 
-                                } else {
-                                    console.error('File upload failed');
-                                }
-                            };
-                            uploadFile();
-                        }
-                    }}
-                    accept="image/*"
-                    className={inputClass}
-                />
-                {formData.image && <p className="text-xs text-green-600 mt-1">✓ Photo uploaded</p>}
+                <div className="flex gap-2 mb-2">
+                    <button type="button" onClick={() => setUseUrl(false)} className={`px-3 py-1 text-sm border-2 ${!useUrl ? 'bg-lime-200' : 'bg-white'}`}>Upload File</button>
+                    <button type="button" onClick={() => setUseUrl(true)} className={`px-3 py-1 text-sm border-2 ${useUrl ? 'bg-lime-200' : 'bg-white'}`}>Use Image URL</button>
+                </div>
+
+                {useUrl ? (
+                    <input
+                        type="url"
+                        name="imageUrl"
+                        value={formData.image || ''}
+                        onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
+                        placeholder="https://example.com/my-image.jpg"
+                        className={inputClass}
+                    />
+                ) : (
+                    <input
+                        type="file"
+                        name="image"
+                        onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                                const uploadFile = async () => {
+                                    const uploadFormData = new FormData();
+                                    uploadFormData.append('artImage', file);
+                                    const res = await fetch(`${API_URL}/upload/art`, {
+                                        method: 'POST',
+                                        body: uploadFormData
+                                    });
+                                    if (res.ok) {
+                                        const body = await res.json();
+                                        const uploadedUrl = (body && body.d && body.d.url) ? body.d.url : (body && body.url) ? body.url : null;
+                                        if (uploadedUrl) setFormData(prev => ({ ...prev, image: uploadedUrl }));
+                                    } else {
+                                        console.error('File upload failed');
+                                    }
+                                };
+                                uploadFile();
+                            }
+                        }}
+                        accept="image/*"
+                        className={inputClass}
+                    />
+                )}
+
+                {formData.image && <p className="text-xs text-green-600 mt-1">✓ Image set</p>}
             </div>
             <div className="flex justify-end items-center gap-3 pt-2">
                 {statusMessage && <span className="text-sm font-medium text-cyan-600">{statusMessage}</span>}
