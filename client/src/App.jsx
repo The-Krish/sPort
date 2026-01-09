@@ -848,7 +848,7 @@ export default function App() {
     let content;
     if (isLoading) {
         content = (
-            <div className={`min-h-screen ${mainBg} ${mainText} flex items-center justify-center font-sans`}>
+            <div className={`max-h-screen ${mainBg} ${mainText} flex items-center justify-center mt-[250px] font-sans`}>
                 <div className={`p-6 bg-white border-4 border-black shadow-[8px_8px_0px_#000000]`}>
                     <p className={`text-2xl font-bold ${mainText}`}>KRISHH...</p>
                 </div>
