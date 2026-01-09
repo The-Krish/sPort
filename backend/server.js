@@ -91,6 +91,12 @@ mongoose.connect(process.env.MONGODB_URI || "")
     })
 
 
+// Health check route
+app.get('/', (req, res) => {
+    res.send('Backend is running');
+});
+
+
 // ------------------ SCHEMAS & MODELS ------------------
 const introSchema = new mongoose.Schema({
     name: String,
