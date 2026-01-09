@@ -183,7 +183,7 @@ function Hero({ profile }) {
                     src={profile.profileImage} 
                     alt={profile.name} 
                     className={`w-32 h-32 border-4 ${tileAccentBorder} object-cover bg-gray-200`} 
-                    onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/150x150/000000/FFFFFF?text=FAIL"; }}
+                    onError={(e) => { e.target.onerror = null; e.target.src = "https://lh3.googleusercontent.com/a/ACg8ocIrQpUsHmDmljt1Y1avXQ5_ulbpkWue_oJd56MqPrA1UVP8VX_z=s400-c"; }}
                 />
                 <h2 className={`text-xl font-bold mt-4 ${mainText}`}>
                     <DecodingText text={profile.name} speed={100} />
