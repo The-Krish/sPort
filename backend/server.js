@@ -14,17 +14,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: [
-      "https://s-port-7elbv3yeu-krishhs-projects-9cce2d20.vercel.app",
-      "https://s-port-ucp2.vercel.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-  })
-);
-
+app.use(cors());
 
 // Serve static files from uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

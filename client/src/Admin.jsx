@@ -732,7 +732,7 @@ function ProfileManager({ data, setPortfolioData }) {
             email: formData.email || '',
             github: formData.github || '',
             linkedin: formData.linkedin || '',
-            profileImage: formData.profileImage || 'https://photos.fife.usercontent.google.com/pw/AP1GczOK1xzVoz4hGawsLuE2GtCfjMpylGvnrM9tJCEkcDOGhW0qzaEjvBbV=w747-h766-s-no-gm?authuser=0',
+            profileImage: formData.profileImage || '',
             resumeUrl: formData.resumeUrl || '',
             bio: formData.bio || '',
         };
