@@ -155,7 +155,7 @@ function Header() {
         <header className={`flex flex-col md:flex-row justify-between items-start md:items-center border-b-4 ${tileAccentBorder} mb-3`}>
             {/* --- Header Start --- */}
             <h1 className={`text-3xl items-center justify-center  font-extrabold  mb-2 md:mb-0`}>
-                MY-WORLD
+                ※MY-WORLD※
             </h1>
             {/* --- Header End --- */}
         </header>
@@ -310,7 +310,7 @@ function Projects({ projects, title, icon, className = "" }) {
     return (
         <Tile className={`col-span-1 ${className}`}>
             {/* --- Projects Start --- */}
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-1 mb-4 flex items-center gap-2 ${mainText}`}>{icon} {title.toUpperCase()} ROJECTS </h3>
+            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-1 mb-4 flex items-center gap-2 ${mainText}`}>{icon} {title.toUpperCase()} PROJECTS </h3>
             <div className="space-y-4">
                 {projects.map(project => (
                     <div key={project.id} className={`p-4 ${tileAccent} border-2 ${tileAccentBorder} shadow-[4px_4px_0px_#000000]`}>
