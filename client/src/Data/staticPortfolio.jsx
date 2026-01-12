@@ -83,7 +83,7 @@ export const STATIC_PORTFOLIO = {
   experiences: [
     {
       _id: "693658821f11aa264d4cadf4",
-      yearRange: "2021-2023",
+      yearRange: "2021-2024",
       title: "BCA",
       institution: "Lyallpur Khalsa College",
       location: "Jalandhar, India",
