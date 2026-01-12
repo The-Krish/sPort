@@ -5,6 +5,8 @@ import {
     Loader2, Palette, ExternalLink, MessageSquare
 } from 'lucide-react';
 import AdminPanel from './Admin.jsx';
+import { STATIC_PORTFOLIO } from "./Data/staticPortfolio.jsx";
+
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -632,13 +634,11 @@ class ErrorBoundary extends React.Component {
 // Removed initialPortfolioData; portfolio initializes from backend or empty defaults
 
 export default function App() {
-    const [portfolioData, setPortfolioData] = useState({
-        name: '', title: '', location: '', bio: '', email: '', github: '', linkedin: '', profileImage: '', resumeUrl: ''
-    });
-    const [skills, setSkills] = useState([]);
-    const [projects, setProjects] = useState([]);
-    const [artProjects, setArtProjects] = useState([]);
-    const [experiences, setExperiences] = useState([]);
+    const [portfolioData, setPortfolioData] = useState( STATIC_PORTFOLIO.portfolioData);
+    const [skills, setSkills] = useState( STATIC_PORTFOLIO.skills);
+    const [projects, setProjects] = useState(STATIC_PORTFOLIO.projects);
+    const [artProjects, setArtProjects] = useState(STATIC_PORTFOLIO.artProjects);
+    const [experiences, setExperiences] = useState(STATIC_PORTFOLIO.experiences);
     const [queries, setQueries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     
