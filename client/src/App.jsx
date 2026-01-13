@@ -745,7 +745,7 @@ export default function App() {
                 email: serverData.email || '',
                 github: serverData.github || '',
                 linkedin: serverData.linkedin || '',
-                profileImage: normalizeImage(serverData.profileImage, 'profile') || 'https://photos.fife.usercontent.google.com/pw/AP1GczOK1xzVoz4hGawsLuE2GtCfjMpylGvnrM9tJCEkcDOGhW0qzaEjvBbV=w747-h766-s-no-gm?authuser=0',
+                profileImage: normalizeImage(serverData.profileImage, 'profile') || '',
                 resumeUrl: serverData.resumeUrl || '',
             };
             setPortfolioData(mapped);
