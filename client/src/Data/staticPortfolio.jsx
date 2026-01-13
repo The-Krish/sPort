@@ -9,7 +9,7 @@ export const STATIC_PORTFOLIO = {
     github: "https://github.com/The-Krish",
     linkedin: "https://linkedin.com/in/krishna-kumar-3572b123a",
     profileImage:
-      "https://lh3.googleusercontent.com/a/ACg8ocIrQpUsHmDmljt1Y1avXQ5_ulbpkWue_oJd56MqPrA1UVP8VX_z=s400-c",
+      "https://photos.fife.usercontent.google.com/pw/AP1GczOK1xzVoz4hGawsLuE2GtCfjMpylGvnrM9tJCEkcDOGhW0qzaEjvBbV=w747-h766-s-no-gm?authuser=0",
     resumeUrl:
       "https://drive.google.com/file/d/12lu8DJ1kMRLw-vgmaCTzYHBCJrkmjhmB/view?usp=drive_link",
     bio:
