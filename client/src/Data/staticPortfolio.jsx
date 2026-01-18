@@ -78,6 +78,19 @@ export const STATIC_PORTFOLIO = {
       vercelLink: "https://todoapp-1-9lqf.onrender.com/",
       _v: 0
     }
+,
+    {
+  _id:"696c719e26a1d0fa4099f58e",
+  title: "SNEAKHUB",
+  description: "SEANHUB is a modern footwear e-commerce platform offering a curated collection of stylish, comfortable, and performance-driven shoes. Designed for sneaker lovers, SEANHUB combines clean design, smooth browsing, and secure shopping for a seamless online experience.",
+  tags: [
+    "HTML/CSS/JS"
+  ],
+  githubLink: "https://github.com/The-Krish/Sneakhub",
+  vercelLink: "https://sneakhub.onrender.com",
+  __v: 0
+}
+
   ],
 
   experiences: [
