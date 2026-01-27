@@ -11,7 +11,7 @@ export const STATIC_PORTFOLIO = {
     profileImage:
       "https://lh3.googleusercontent.com/a/ACg8ocIrQpUsHmDmljt1Y1avXQ5_ulbpkWue_oJd56MqPrA1UVP8VX_z=s360-c-no",
     resumeUrl:
-      "https://drive.google.com/uc?export=download&id=12S3_2orLmHqG1zmx13IM591eMT-5RR7y",
+      "https://drive.google.com/file/d/1Gyx8jg5XCCxshI-ziSv4Vh0QZq3MSAqS/view?usp=drive_link",
     bio:
       "I combine technical precision with creative flair, building fast, responsive web applications and designing immersive digital art. Passionate about clean code and beautiful aesthetics, I specialize in the MERN (MongoDB, Express, React, Node) stack for full-stack development. I often stay up late coding or designing."
   },
