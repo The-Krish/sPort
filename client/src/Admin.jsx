@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     PlusCircle, Trash2, Edit, Save, MessageSquare, Search, Settings, User
 } from 'lucide-react';
@@ -963,6 +964,7 @@ function QueriesManager({ queries, setQueries }) {
 // Main Admin Panel Component
 function AdminPanel({ data, setPortfolioData, setSkills, setProjects, setArtProjects, setExperiences, setQueries, onLogout }) {
     const { mainText } = useThemeClasses();
+    const navigate = useNavigate();
 
 
 
@@ -996,14 +998,15 @@ function AdminPanel({ data, setPortfolioData, setSkills, setProjects, setArtProj
     return (
         <main className="max-w-7xl mx-auto py-6">
             <div className="flex justify-between items-start md:items-center mb-6 border-b-4 border-black pb-4">
-                <h1 className={`text-4xl font-extrabold ${mainText} flex items-center gap-3`}>
-                    <Settings className={`w-8 h-8 ${mainText} animate-spin-slow`}/> ADMIN INVENTORY PANEL
+                <h1 className={`text-4xl font-extrabold  flex items-center gap-3`}>
+                    <Settings className={`w-8 h-8 text-white animate-spin-slow`}/> ADMIN INVENTORY PANEL
                 </h1>
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => {
-                            try { if (window && window.localStorage) window.localStorage.removeItem('adminAuth'); } catch (e) {}
+                            try { if (window && window.localStorage) window.localStorage.removeItem('adminAuth'); } catch (e) { void(e); }
                             onLogout && onLogout();
+                            navigate('/');
                         }}
                         className="px-3 py-1 border-2 border-black bg-red-400 hover:bg-red-500 text-black font-semibold shadow-[4px_4px_0px_#000000]"
                         title="Logout from admin"

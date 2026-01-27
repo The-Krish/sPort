@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import { 
     Mail, Briefcase, Zap, Code, MapPin, Github, Linkedin, Download, 
-    Loader2, Palette, ExternalLink, MessageSquare
+    Loader2, Palette, ExternalLink, MessageSquare, Sparkles
 } from 'lucide-react';
 import AdminPanel from './Admin.jsx';
 import { STATIC_PORTFOLIO } from "./Data/staticPortfolio.jsx";
@@ -17,43 +17,43 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 // Custom hook for theme classes
 const useThemeClasses = () => {
     return useMemo(() => {
-        // Light mode only - dark mode removed
-        const mainText = 'text-black';
-        const mainBg = 'bg-gray-100'; 
-        const tileBg = 'bg-white';
-        const tileBorder = 'border-black';
-        const tileShadow = 'shadow-[8px_8px_0px_#000000]';
-        const tileAccent = 'bg-gray-100';
-        const tileAccentBorder = 'border-black';
+        // Dark glassmorphism theme for professional aesthetic
+        const mainText = 'text-white';
+        const mainBg = 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900'; 
+        const tileBg = 'bg-white/10 backdrop-blur-xl';
+        const tileBorder = 'border-white/20';
+        const tileShadow = 'shadow-2xl';
+        const tileAccent = 'bg-white/5 backdrop-blur-md';
+        const tileAccentBorder = 'border-white/15';
         
         // Define button styles
         const activeClass = 'active:shadow-none active:translate-y-0.5 transition-all duration-75';
         const buttonBase = 'border-2 font-semibold ' + activeClass;
         
         // Input classes
-        const inputClass = "bg-white border-2 border-black p-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 text-black";
+        const inputClass = "bg-white/10 border-2 border-white/20 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 text-white placeholder-slate-400";
 
         return {
             mainText, mainBg, tileBg, tileBorder, tileShadow, tileAccent, tileAccentBorder,
             activeClass, buttonBase, inputClass,
             
-            // Specific button color configurations
-            buttonPrimary: 'bg-cyan-300 hover:bg-cyan-400 text-black shadow-[4px_4px_0px_#000000]',
-            buttonSecondary: 'bg-gray-300 hover:bg-gray-400 text-black shadow-[4px_4px_0px_#000000]',
-            buttonSuccess: 'bg-lime-300 hover:bg-lime-400 text-black shadow-[4px_4px_0px_#000000]',
-            buttonWarning: 'bg-yellow-300 hover:bg-yellow-400 text-black shadow-[4px_4px_0px_#000000]',
-            buttonDanger: 'bg-red-400 hover:bg-red-500 text-black shadow-[4px_4px_0px_#000000]',
+            // Specific button color configurations with glassmorphism
+            buttonPrimary: 'bg-cyan-500/60 backdrop-blur-md hover:bg-cyan-500/80 text-white shadow-lg border border-cyan-400/40',
+            buttonSecondary: 'bg-slate-700/60 backdrop-blur-md hover:bg-slate-700/80 text-white shadow-lg border border-white/20',
+            buttonSuccess: 'bg-emerald-500/60 backdrop-blur-md hover:bg-emerald-500/80 text-white shadow-lg border border-emerald-400/40',
+            buttonWarning: 'bg-amber-500/60 backdrop-blur-md hover:bg-amber-500/80 text-white shadow-lg border border-amber-400/40',
+            buttonDanger: 'bg-rose-500/60 backdrop-blur-md hover:bg-rose-500/80 text-white shadow-lg border border-rose-400/40',
         };
     }, []);
 };
 
-// Boxy Container Component
+// Glassmorphic Container Component
 function Tile({ className = "", children, style = {} }) { 
     const { tileBg, tileBorder, tileShadow } = useThemeClasses();
     
     return (
         <div
-            className={`p-6 ${tileBg} ${tileBorder} border-4 ${tileShadow} ${className}`}
+            className={`p-6 ${tileBg} ${tileBorder} border-2 ${tileShadow} rounded-2xl ${className}`}
             style={{ ...style, minHeight: '100%' }}
         >
             {children}
@@ -61,12 +61,12 @@ function Tile({ className = "", children, style = {} }) {
     );
 }
 
-// Global Custom Styles (Light mode only)
+// Global Custom Styles with Glassmorphism (Light mode only)
 const CustomStyles = () => {
 
-    const scrollbarThumb = '#000000'; 
-    const scrollbarTrack = '#ffffff'; 
-    const scrollbarBorder = '#000000'; 
+    const scrollbarThumb = 'rgba(148, 163, 184, 0.5)'; 
+    const scrollbarTrack = 'rgba(15, 23, 42, 0.5)'; 
+    const scrollbarBorder = 'rgba(100, 116, 139, 0.3)'; 
 
     return `
         .font-sans {
@@ -77,11 +77,14 @@ const CustomStyles = () => {
         }
         ::-webkit-scrollbar-track {
             background: ${scrollbarTrack};
-            border-left: 4px solid ${scrollbarBorder};
+            border-left: 2px solid ${scrollbarBorder};
+            backdrop-filter: blur(10px);
         }
         ::-webkit-scrollbar-thumb {
             background: ${scrollbarThumb};
-            border: 1px solid ${scrollbarTrack};
+            border: 1px solid ${scrollbarBorder};
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
         }
         @keyframes spin-slow {
             0% { transform: rotate(0deg); }
@@ -90,8 +93,89 @@ const CustomStyles = () => {
         .animate-spin-slow {
             animation: spin-slow 8s linear infinite;
         }
+        @keyframes spin-globe {
+            0% { transform: rotateY(0deg) rotateX(5deg); }
+            100% { transform: rotateY(360deg) rotateX(5deg); }
+        }
+        .animate-spin-globe {
+            animation: spin-globe 12s linear infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% {
+                opacity: 1;
+                filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.5));
+            }
+            50% {
+                opacity: 0.8;
+                filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.8));
+            }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(34, 211, 238, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+            }
+        }
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .animate-slideInLeft {
+            animation: slideInLeft 0.6s ease-out;
+        }
+        .animate-slideInRight {
+            animation: slideInRight 0.6s ease-out;
+        }
+        .animate-float {
+            animation: float 8s ease-in-out infinite;
+        }
+        .animate-glow {
+            animation: glow 2s ease-in-out infinite;
+        }
         * {
-            border-radius: 0 !important;
+            border-radius: inherit;
         }
         .max-w-query {
             max-width: 400px;
@@ -107,7 +191,7 @@ function DecodingText({ text, speed = 80 }) {
     );
     const [index, setIndex] = useState(0);
 
-    const decodingColor = 'text-red-600';
+    const decodingColor = 'text-rose-400';
 
     useEffect(() => {
         if (index >= text.length) return;
@@ -154,24 +238,23 @@ function Header() {
     const { tileAccentBorder } = useThemeClasses();
 
     return (
-        <header className={`flex flex-col md:flex-row justify-between items-start md:items-center border-b-4 ${tileAccentBorder} mb-3`}>
+        <header className={`flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 ${tileAccentBorder} mb-3 pb-3 animate-fadeInUp`}>
             {/* --- Header Start --- */}
-            <h1 className={`text-3xl items-center justify-center  font-extrabold  mb-2 md:mb-0`}>
-                ※MY-WORLD※
-            </h1>
+            <Link to="/adminKrish" className="hover:opacity-80 transition-opacity flex items-center gap-3">
+                <Sparkles className={`w-10 h-10 text-cyan-400 animate-pulse-glow`} />
+                <h1 className={`text-4xl font-extrabold mb-2 md:mb-0 bg-white/80 bg-clip-text text-transparent cursor-pointer`}>
+                    MY-WORLD
+                </h1>
+            </Link>
             {/* --- Header End --- */}
         </header>
     );
 }
 
 function Hero({ profile }) {
-    const { mainText, tileAccentBorder, activeClass, buttonBase } = useThemeClasses();
+    const { mainText, tileAccentBorder, activeClass } = useThemeClasses();
     
-    const socialButtonClass = (bgColor, shadowColor, textColor) => 
-        `flex items-center gap-2 px-3 py-1.5 text-sm ${buttonBase} ${bgColor} ${textColor} ${shadowColor}`;
-        
-    const miniButtonClass = `mt-3 p-1.5 text-xs bg-lime-300 hover:bg-lime-400 text-black shadow-[4px_4px_0px_#000000] ${activeClass}`;
-    const linkColor = 'text-cyan-600 hover:text-cyan-800';
+    
 
 
     return (
@@ -180,50 +263,49 @@ function Hero({ profile }) {
         <Tile className="col-span-1 md:col-span-3 grid grid-cols-1 sm:grid-cols-4 gap-6">
             {/* --- Hero Start --- */}
             {/* --- Profile Image, Decoding Name, Title (ProfileBlock) Start --- */}
-            <div className="sm:col-span-1 flex flex-col items-center justify-center">
+            <div className="sm:col-span-1 flex flex-col items-center justify-center animate-slideInLeft">
                 <img 
-                    src={profile.profileImage} 
+                    src={profile.profileImage}
                     alt={profile.name} 
-                    className={`w-32 h-32 border-4 ${tileAccentBorder} object-cover bg-gray-200`} 
-                    onError={(e) => { e.target.onerror = null; e.target.src = "https://lh3.googleusercontent.com/a/ACg8ocIrQpUsHmDmljt1Y1avXQ5_ulbpkWue_oJd56MqPrA1UVP8VX_z=s400-c"; }}
+                    className={`w-32 h-32 border-2 object-cover bg-black rounded-xl backdrop-blur-sm ring-4 shadow-xl animate-float transition-all duration-300 hover:shadow-cyan-400/20`} 
+                    onError={(e) => { e.target.onerror = null; e.target.src = "./public/krishhh.jpg"; }}
                 />
                 <h2 className={`text-xl font-bold mt-4 ${mainText}`}>
                     <DecodingText text={profile.name} speed={100} />
                 </h2>
-                <p className={`text-sm text-gray-700 italic text-center`}>{profile.title}</p>
+                <p className={`text-sm text-slate-400 italic text-center`}>{profile.title}</p>
                 
                 <a 
                     href={profile.resumeUrl} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className={`${miniButtonClass} flex items-center justify-center`} 
+                    className={`mt-3 p-2 text-xs bg-emerald-600  text-white shadow-lg ${activeClass} rounded-lg border border-emerald-400/40 backdrop-blur-sm flex items-center justify-center gap-1 font-semibold`} 
                     title="Download Resume/CV"
-                >Resume
-                    <Download className="w-4 h-4" /> 
-                </a>
+                >
+                    <Download className="w-4 h-4" />Resume </a>
             </div>
             {/* --- ProfileBlock End --- */}
 
             {/* --- Biography, Contact, and Social Links --- */}
-            <div className="sm:col-span-3">
-                <h3 className={`text-2xl font-extrabold border-b-2 ${tileAccentBorder} pb-1 mb-3 ${mainText}`}>BIOGRAPHY BLOCK</h3>
+            <div className="sm:col-span-3 animate-slideInRight">
+                <h3 className={`text-2xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-3 ${mainText} bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent`}>BIOGRAPHY BLOCK</h3>
                 <p className={`whitespace-pre-wrap ${mainText} mb-4`}>{profile.bio}</p>
                 
                 {/* Contact and Location */}
                 <div className={`flex flex-wrap items-center gap-4 text-sm font-semibold mb-4 ${mainText}`}>
-                    <span className={`flex items-center gap-1 text-red-600`}><MapPin className="w-4 h-4"/> {profile.location}</span>
-                    <a href={`mailto:${profile.email}`} className={`flex items-center gap-1 ${mainText} hover:${linkColor}`}>
+                    <span className={`flex items-center gap-1 text-rose-400`}><MapPin className="w-4 h-4"/> {profile.location}</span>
+                    <a href={`mailto:${profile.email}`} className={`flex items-center gap-1 text-cyan-300 hover:text-cyan-200`}>
                         <Mail className="w-4 h-4"/> {profile.email}
                     </a>
                 </div>
                 
-                <h4 className={`text-lg font-bold border-b-2 ${tileAccentBorder} pb-1 mb-2 ${mainText}`}>CRITICAL LINKS:</h4>
+                <h4 className={`text-lg font-bold border-b-2 ${tileAccentBorder} pb-1 mb-2 ${mainText} bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent`}>CRITICAL LINKS:</h4>
                 <div className="flex flex-wrap gap-3">
                     <a 
                         href={profile.github} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className={socialButtonClass('bg-gray-400', 'shadow-[4px_4px_0px_#000000]', 'text-black')}
+                        className={`flex items-center gap-2 px-3 py-2 text-sm font-semibold bg-slate-700/60 backdrop-blur-md hover:bg-slate-700/80 text-white border border-white/20 rounded-lg shadow-lg ${activeClass}`}
                     >
                         <Github className="w-4 h-4"/> GITHUB CODE MINE
                     </a>
@@ -231,7 +313,7 @@ function Hero({ profile }) {
                         href={profile.linkedin} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className={socialButtonClass('bg-blue-300', 'shadow-[4px_4px_0px_#000000]', 'text-black')}
+                        className={`flex items-center gap-2 px-3 py-2 text-sm font-semibold bg-blue-700/60 backdrop-blur-md hover:bg-blue-700/80 text-white border border-blue-400/30 rounded-lg shadow-lg ${activeClass}`}
                     >
                         <Linkedin className="w-4 h-4"/> LINKEDIN PROFESSION BLOCK
                     </a>
@@ -250,12 +332,12 @@ function Skills({ skills }) {
     return (
         <Tile className="col-span-1 md:col-span-1">
             {/* --- Skills Start --- */}
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-1 mb-4 flex items-center gap-2 ${mainText}`}><Zap className="w-5 h-5"/> SKILL BLOCKS</h3>
+            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent`}><Zap className="w-5 h-5"/> SKILL BLOCKS</h3>
             <ul className="space-y-2">
                 {skills.map(skill => (
-                    <li key={skill.id} className={`p-2 ${tileAccent} border-2 ${tileAccentBorder} shadow-[2px_2px_0px_#000000] flex justify-between items-center`}>
+                    <li key={skill.id} className={`p-3 ${tileAccent} border ${tileAccentBorder} rounded-lg shadow-md flex justify-between items-center hover:bg-white/15 transition-all duration-200`}>
                         <span className={`font-semibold ${mainText}`}>{skill.icon} {skill.name}</span>
-                        <span className={`text-xs px-1 py-0.5 border ${tileAccentBorder} text-gray-700 bg-white`}>
+                        <span className={`text-xs px-2 py-1 border border-emerald-400/40 text-white bg-emerald-500/20 backdrop-blur-sm rounded-md font-semibold`}>
                             {skill.level}
                         </span>
                     </li>
@@ -276,24 +358,24 @@ function ExperienceTimeline({ experiences }) {
     return (
         <Tile className="md:col-span-2">
             {/* --- ExperienceTimeline Start --- */}
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-1 mb-4 flex items-center gap-2 ${mainText}`}>
+            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent`}>
                 <Briefcase className="w-5 h-5"/> EXPERIENCE & EDUCATION LOGS
             </h3>
             <div className="space-y-6">
                 {sortedExperiences.map((item) => (
-                    <div key={item.id} className={`relative p-4 border-l-4 ${tileAccentBorder}`}>
+                    <div key={item.id} className={`relative p-4 border-l-2 ${tileAccentBorder}`}>
                         {/* Timeline Pin (Block) */}
-                        <div className={`absolute -left-3 top-0 w-6 h-6 border-4 ${tileAccentBorder} bg-gray-100 flex items-center justify-center`}>
-                            <span className={`w-2 h-2 bg-black block`}></span>
+                        <div className={`absolute -left-3 top-0 w-6 h-6 border-2 border-white bg-green-500/80 backdrop-blur-sm rounded-full flex items-center justify-center`}>
+                            <span className={`w-2 h-2 bg-white block rounded-full`}></span>
                         </div>
                         
-                        <div className={`p-3 ${tileAccent} border-2 ${tileAccentBorder} shadow-[4px_4px_0px_#000000]`}>
-                            <p className={`text-sm font-mono font-semibold mb-1 text-red-600`}>
+                        <div className={`p-4 ${tileAccent} border ${tileAccentBorder} rounded-xl shadow-md hover:bg-white/15 transition-all duration-200`}>
+                            <p className={`text-sm font-mono font-semibold mb-1 text-rose-400`}>
                                 {item.yearRange}
                             </p>
                             <h4 className={`text-lg font-bold ${mainText}`}>{item.title}</h4>
-                            <p className={`text-base italic text-gray-700 mb-2`}>{item.institution} ({item.location})</p>
-                            <p className={`text-sm text-gray-600`}>{item.description}</p>
+                            <p className={`text-base italic text-slate-300 mb-2`}>{item.institution} ({item.location})</p>
+                            <p className={`text-sm text-slate-400`}>{item.description}</p>
                         </div>
                     </div>
                 ))}
@@ -306,25 +388,22 @@ function ExperienceTimeline({ experiences }) {
 function Projects({ projects, title, icon, className = "" }) {
     const { mainText, tileAccentBorder, tileAccent, activeClass } = useThemeClasses();
 
-    const linkButtonClass = (bgColor, textColor, shadowColor) => 
-        `flex items-center justify-center h-8 w-8 text-sm font-semibold border-2 ${tileAccentBorder} ${activeClass} ${bgColor} ${textColor} ${shadowColor}`;
-
     return (
         <Tile className={`col-span-1 ${className}`}>
             {/* --- Projects Start --- */}
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-1 mb-4 flex items-center gap-2 ${mainText}`}>{icon} {title.toUpperCase()} PROJECTS </h3>
+            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent`}>{icon} {title.toUpperCase()} PROJECTS </h3>
             <div className="space-y-4">
                 {projects.map(project => (
-                    <div key={project.id} className={`p-4 ${tileAccent} border-2 ${tileAccentBorder} shadow-[4px_4px_0px_#000000]`}>
+                    <div key={project.id} className={`p-4 ${tileAccent} border ${tileAccentBorder} rounded-xl shadow-md hover:bg-white/15 transition-all duration-200`}>
                         <h4 className={`text-lg font-bold ${mainText}`}>{project.title}</h4>
-                        <p className={`text-sm text-gray-700 my-2`}>{project.description}</p>
+                        <p className={`text-sm text-slate-300 my-2`}>{project.description}</p>
                         
                         <div className="flex justify-between items-end mt-3">
                             {/* Project Tags */}
                             {project.tags && Array.isArray(project.tags) && (
                                 <div className="flex flex-wrap gap-2">
                                     {project.tags.map(tag => (
-                                        <span key={tag} className={`text-xs font-mono px-2 py-0.5 border ${tileAccentBorder} shadow-[1px_1px_0px_#000000] bg-cyan-300 text-black`}>{tag}</span>
+                                        <span key={tag} className={`text-xs font-mono px-2 py-1 border border-cyan-400/40 rounded-md bg-cyan-500/20 backdrop-blur-sm text-cyan-300 font-semibold`}>{tag}</span>
                                     ))}
                                 </div>
                             )}
@@ -336,7 +415,7 @@ function Projects({ projects, title, icon, className = "" }) {
                                         href={project.githubLink} 
                                         target="_blank" 
                                         rel="noopener noreferrer" 
-                                        className={linkButtonClass('bg-gray-400', 'text-black', 'shadow-[4px_4px_0px_#000000]')}
+                                        className={`flex items-center justify-center h-8 w-8 text-sm font-semibold border ${tileAccentBorder} ${activeClass} bg-gray-700/60 backdrop-blur-md hover:bg-gray-700/80 text-white rounded-lg shadow-md`}
                                         title="View Source Code (GitHub)"
                                     >
                                         <Github className="w-4 h-4"/>
@@ -347,7 +426,7 @@ function Projects({ projects, title, icon, className = "" }) {
                                         href={project.vercelLink} 
                                         target="_blank" 
                                         rel="noopener noreferrer" 
-                                        className={linkButtonClass('bg-lime-300', 'text-black', 'shadow-[4px_4px_0px_#000000]')}
+                                        className={`flex items-center justify-center h-8 w-8 text-sm font-semibold border ${tileAccentBorder} ${activeClass} bg-lime-500/60 backdrop-blur-md hover:bg-lime-500/80 text-white rounded-lg shadow-md`}
                                         title="View Live App (Vercel/Demo)"
                                     >
                                         <ExternalLink className="w-4 h-4"/>
@@ -369,18 +448,18 @@ function ArtGallery({ artProjects }) {
     return (
         <Tile className="col-span-1 md:col-span-4">
             {/* --- ArtGallery Start --- */}
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-1 mb-4 flex items-center gap-2 ${mainText}`}><Palette className="w-5 h-5"/> MY SKETCHES GALLERY</h3>
+            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-pink-400 to-orange-400 bg-clip-text text-transparent`}><Palette className="w-5 h-5"/> MY SKETCHES GALLERY</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {artProjects.map(art => (
-                    <div key={art.id} className={`p-2 ${tileAccent} border-2 ${tileAccentBorder} shadow-[2px_2px_0px_#000000]`}>
+                    <div key={art.id} className={`p-3 ${tileAccent} border ${tileAccentBorder} rounded-xl shadow-md hover:bg-white/15 transition-all duration-200`}>
                         <img 
                             src={art.image} 
                             alt={art.title} 
-                            className={`w-full h-auto border-2 ${tileAccentBorder} object-cover mb-2 bg-gray-200`}
+                            className={`w-full h-auto border ${tileAccentBorder} object-cover mb-2 bg-slate-700/40 rounded-lg`}
                             onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/200x200/000000/FFFFFF?text=K"; }}
                         />
                         <p className={`text-sm font-semibold leading-tight ${mainText}`}>{art.title}</p>
-                        <p className={`text-xs text-gray-600 italic`}>{art.type}</p>
+                        <p className={`text-xs text-slate-400 italic`}>{art.type}</p>
                     </div>
                 ))}
             </div>
@@ -394,7 +473,7 @@ function WorkQueryBlock({ setQueries }) {
     const [status, setStatus] = useState(null); 
     const [statusMessage, setStatusMessage] = useState('');
     
-    const { mainText, tileAccentBorder, inputClass, buttonPrimary, buttonDanger, activeClass } = useThemeClasses();
+    const { mainText, tileAccentBorder, buttonPrimary, buttonDanger, activeClass } = useThemeClasses();
     
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -457,18 +536,18 @@ function WorkQueryBlock({ setQueries }) {
     
     let statusClasses = '';
     if (status === 'success') {
-        statusClasses = 'text-green-800 border-lime-400 bg-lime-200';
+        statusClasses = 'text-emerald-300 border-emerald-400/40 bg-emerald-500/20';
     } else if (status === 'error') {
-        statusClasses = 'text-red-800 border-red-400 bg-red-200';
+        statusClasses = 'text-rose-300 border-rose-400/40 bg-rose-500/20';
     }
 
     return (
         <Tile className="col-span-1 md:col-span-4 mt-6">
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-1 mb-4 flex items-center gap-2 ${mainText}`}>
+            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent`}>
                 <MessageSquare className="w-5 h-5"/> WORK QUERY / SUGGETIONS
             </h3>
             
-            <p className={`text-sm text-gray-700 mb-4`}>
+            <p className={`text-sm text-slate-400 mb-4`}>
                 Need a specific feature, component, or full stack app chunk coded? Send a detailed request here.
             </p>
 
@@ -483,7 +562,7 @@ function WorkQueryBlock({ setQueries }) {
                             value={formData.name}
                             onChange={handleChange}
                             required
-                            className={inputClass}
+                            className="bg-white/10 backdrop-blur-md border border-white/20 p-3 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 text-white placeholder-slate-400"
                             placeholder="Name Here"
                         />
                     </div>
@@ -496,7 +575,7 @@ function WorkQueryBlock({ setQueries }) {
                             value={formData.email}
                             onChange={handleChange}
                             required
-                            className={inputClass}
+                            className="bg-white/10 backdrop-blur-md border border-white/20 p-3 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 text-white placeholder-slate-400"
                             placeholder="gmail here"
                         />
                     </div>
@@ -511,21 +590,21 @@ function WorkQueryBlock({ setQueries }) {
                         onChange={handleChange}
                         required
                         rows="4"
-                        className={inputClass}
+                        className="bg-white/10 backdrop-blur-md border border-white/20 p-3 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 text-white placeholder-slate-400 resize-none"
                         placeholder="yoou query here..."
                     />
                 </div>
 
                 <div className="flex justify-between items-center pt-2">
                     {statusMessage && (
-                        <p className={`text-sm font-medium border-4 p-2 shadow-[4px_4px_0px_#000000] ${statusClasses}`}>
+                        <p className={`text-sm font-medium border-2 p-3 rounded-lg ${statusClasses} backdrop-blur-sm`}>
                             {statusMessage}
                         </p>
                     )}
                     <button 
                         type="submit"
                         disabled={isPending}
-                        className={`flex items-center gap-2 px-4 py-2 text-base ml-auto ${activeClass} ${buttonPrimary}`}
+                        className={`flex items-center gap-2 px-5 py-2.5 text-base ml-auto rounded-lg font-semibold border border-white/60 ${activeClass} ${buttonPrimary}`}
                     >
                         {isPending ? <Loader2 className="w-4 h-4 animate-spin"/> : <Mail className="w-5 h-5"/>} {buttonText}
                     </button>
@@ -537,12 +616,10 @@ function WorkQueryBlock({ setQueries }) {
 
 // FOOTER COMPONENT
 function Footer({ email }) {
-    const { tileAccentBorder } = useThemeClasses();
-
     return (
-        <footer className={`mt-8 pt-4 border-t-4 ${tileAccentBorder} text-center`}>
-            <p className={`text-sm font-semibold p-4 border-2 ${tileAccentBorder} shadow-[4px_4px_0px_#000000] inline-block bg-white text-black`}>
-                KRISH•2025: <a href={`mailto:${email}`} className={`text-cyan-600 hover:text-cyan-800 underline`}>{email}</a>
+        <footer className={`mt-8 pt-4 border-t-2 border-white/20 text-center`}>
+            <p className={`text-sm font-semibold p-4 border-2 border-white/20 rounded-xl shadow-lg inline-block bg-white/10 backdrop-blur-md text-white`}>
+                KRISH•2025: <a href={`mailto:${email}`} className={`text-cyan-400 hover:text-cyan-300 underline font-bold`}>{email}</a>
             </p>
         </footer>
     );
@@ -598,24 +675,24 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="p-8 md:p-10 border-4 border-black bg-red-400 text-black shadow-[10px_10px_0px_#000000] max-w-xl mx-auto mt-20">
-          <h1 className="text-3xl font-bold border-b-4 border-black pb-2">🚨 WORLD ERROR: CHUNK FAILED TO LOAD!</h1>
-          <p className="mt-4">
+        <div className={`p-8 md:p-10 border-2 border-rose-500/40 bg-rose-500/20 backdrop-blur-xl text-white rounded-2xl shadow-lg max-w-xl mx-auto mt-20`}>
+          <h1 className="text-3xl font-bold border-b-2 border-rose-500/40 pb-3 mb-2">🚨 WORLD ERROR: CHUNK FAILED TO LOAD!</h1>
+          <p className="mt-4 text-slate-200">
             A critical error occurred while rendering the interface. The world has temporarily paused.
           </p>
-          <details className="mt-4 bg-red-300 p-3 border-2 border-black text-sm">
-             <summary className="font-semibold cursor-pointer">Click to inspect broken item (Debugging)</summary>
-             <pre className="mt-2 text-xs whitespace-pre-wrap overflow-auto">
+          <details className="mt-4 bg-white/5 backdrop-blur-md p-3 border border-white/20 rounded-lg text-sm">
+             <summary className="font-semibold cursor-pointer hover:opacity-80 transition-opacity text-slate-100">Click to inspect broken item (Debugging)</summary>
+             <pre className="mt-3 text-xs whitespace-pre-wrap overflow-auto bg-slate-900/50 p-2 rounded border border-white/20 text-slate-300">
                  {this.state.error && this.state.error.toString()}
              </pre>
              {this.state.errorInfo?.componentStack && (
-                <pre className="mt-2 text-xs whitespace-pre-wrap overflow-auto border-t border-black pt-2">
+                <pre className="mt-3 text-xs whitespace-pre-wrap overflow-auto border-t border-white/20 pt-2 bg-slate-900/50 p-2 rounded text-slate-300">
                     {this.state.errorInfo.componentStack}
                 </pre>
              )}
           </details>
           <button 
-              className="mt-4 px-4 py-2 bg-yellow-300 text-black border-2 border-black font-bold shadow-[4px_4px_0px_#000000] active:shadow-none active:translate-y-0.5" 
+              className="mt-4 px-4 py-2 bg-amber-500/60 backdrop-blur-md text-white border border-amber-400/40 rounded-lg font-bold shadow-lg hover:bg-amber-500/70 transition-all" 
               onClick={() => window.location.reload()}
           >
               RELOAD WORLD
@@ -670,20 +747,21 @@ export default function App() {
                 } else {
                     setError('Invalid password');
                 }
-            } catch (err) {
+            } catch (error) {
+                console.error(error);
                 setError('Network error');
             } finally { setPending(false); }
         };
 
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="p-6 bg-white border-4 border-black shadow-[8px_8px_0px_#000000] w-full max-w-md">
-                    <h2 className="text-xl font-bold mb-3">Admin Login</h2>
+                <div className="p-6 bg-white/10 backdrop-blur-xl border-2 border-white/20 rounded-2xl shadow-lg w-full max-w-md">
+                    <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">Admin Login</h2>
                     <form onSubmit={submit} className="space-y-3">
-                        <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter admin password" className="w-full p-2 border-2 border-black" />
-                        {error && <div className="text-sm text-red-600">{error}</div>}
+                        <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter admin password" className="w-full p-2 border border-white/20 bg-white/10 backdrop-blur-md rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 text-white placeholder-slate-400" />
+                        {error && <div className="text-sm text-rose-400 font-semibold">{error}</div>}
                         <div className="flex justify-end">
-                            <button type="submit" disabled={pending} className="px-4 py-2 bg-cyan-300 border-2 border-black">{pending ? 'Checking...' : 'Enter'}</button>
+                            <button type="submit" disabled={pending} className="px-4 py-2 bg-gradient-to-r from-cyan-500/60 to-blue-500/60 hover:from-cyan-600/60 hover:to-blue-600/60 border border-cyan-400/40 rounded-lg font-semibold text-white shadow-md">{pending ? 'Checking...' : 'Enter'}</button>
                         </div>
                     </form>
                 </div>
@@ -705,8 +783,8 @@ export default function App() {
             if (!body) return null;
             // If wrapped response with .d, return that, otherwise return body directly
             return body.d !== undefined ? body.d : body;
-        } catch (err) {
-            console.error(`Fetch error for ${endpoint}:`, err);
+        } catch (_err) {
+            console.error(`Fetch error for ${endpoint}:`, _err);
             return null;
         }
     };
@@ -848,9 +926,10 @@ export default function App() {
     let content;
     if (isLoading) {
         content = (
-            <div className={`max-h-screen ${mainBg} ${mainText} flex items-center justify-center mt-[250px] font-sans`}>
-                <div className={`p-6 bg-white border-4 border-black shadow-[8px_8px_0px_#000000]`}>
-                    <p className={`text-2xl font-bold ${mainText}`}>KRISHH...</p>
+            <div className={`min-h-screen mt-1 ${mainBg} ${mainText} flex items-center justify-center font-sans`}>
+                <div className={`p-10 bg-white/10 backdrop-blur-xl border-2 border-white/20 rounded-2xl shadow-lg`}>
+                    <Loader2 className={`w-12 h-12 animate-spin text-cyan-400 mx-auto`} />
+                    <p className="mt-4 text-center text-white font-semibold">KRISHH...</p>
                 </div>
             </div>
         );
@@ -890,7 +969,7 @@ export default function App() {
                                 setExperiences={setExperiences} 
                                 setQueries={setQueries}
                                 onLogout={() => {
-                                    try { if (typeof window !== 'undefined' && window.localStorage) window.localStorage.removeItem('adminAuth'); } catch (e) {}
+                                    try { if (typeof window !== 'undefined' && window.localStorage) window.localStorage.removeItem('adminAuth'); } catch (e) { void(e); }
                                     setIsAdminAuth(false);
                                 }}
                             />

@@ -9,9 +9,9 @@ export const STATIC_PORTFOLIO = {
     github: "https://github.com/The-Krish",
     linkedin: "https://linkedin.com/in/krishna-kumar-3572b123a",
     profileImage:
-      "https://photos.fife.usercontent.google.com/pw/AP1GczOK1xzVoz4hGawsLuE2GtCfjMpylGvnrM9tJCEkcDOGhW0qzaEjvBbV=w747-h766-s-no-gm?authuser=0",
+      "./public/krishhh.jpg",
     resumeUrl:
-      "https://drive.google.com/file/d/12lu8DJ1kMRLw-vgmaCTzYHBCJrkmjhmB/view?usp=drive_link",
+      "https://drive.google.com/uc?export=download&id=12S3_2orLmHqG1zmx13IM591eMT-5RR7y",
     bio:
       "I combine technical precision with creative flair, building fast, responsive web applications and designing immersive digital art. Passionate about clean code and beautiful aesthetics, I specialize in the MERN (MongoDB, Express, React, Node) stack for full-stack development. I often stay up late coding or designing."
   },
@@ -82,7 +82,7 @@ export const STATIC_PORTFOLIO = {
     {
   _id:"696c719e26a1d0fa4099f58e",
   title: "SNEAKHUB",
-  description: "SEANHUB is a modern footwear e-commerce platform offering a curated collection of stylish, comfortable, and performance-driven shoes. Designed for sneaker lovers, SEANHUB combines clean design, smooth browsing, and secure shopping for a seamless online experience.",
+  description: "SNEAKHUB is a modern footwear e-commerce platform offering a curated collection of stylish, comfortable, and performance-driven shoes. Designed for sneaker lovers, SEANHUB combines clean design, smooth browsing, and secure shopping for a seamless online experience.",
   tags: [
     "HTML/CSS/JS"
   ],
