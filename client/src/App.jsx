@@ -926,10 +926,10 @@ export default function App() {
     let content;
     if (isLoading) {
         content = (
-            <div className={`min-h-screen mt-1 ${mainBg} ${mainText} flex items-center justify-center font-sans`}>
-                <div className={`p-10 bg-white/10 backdrop-blur-xl border-2 border-white/20 rounded-2xl shadow-lg`}>
+            <div className={`min-screen flex items-center justify-center font-sans`}>
+                <div className={`p-5 mt-[250px] w-[180px] bg-white/10 backdrop-blur-xl border-2 border-white/20 rounded-2xl shadow-lg`}>
                     <Loader2 className={`w-12 h-12 animate-spin text-cyan-400 mx-auto`} />
-                    <p className="mt-4 text-center text-white font-semibold">KRISHH...</p>
+                    <p className="mt-4 text-center text-lg text-white font-semibold">KRISHH...</p>
                 </div>
             </div>
         );
