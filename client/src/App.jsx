@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { 
     Mail, Briefcase, Zap, Code, MapPin, Github, Linkedin, Download, 
     Loader2, Palette, ExternalLink, MessageSquare, Sparkles
 } from 'lucide-react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import AdminPanel from './Admin.jsx';
 import { STATIC_PORTFOLIO } from "./Data/staticPortfolio.jsx";
 
@@ -53,7 +55,7 @@ function Tile({ className = "", children, style = {} }) {
     
     return (
         <div
-            className={`p-6 ${tileBg} ${tileBorder} border-2 ${tileShadow} rounded-2xl ${className}`}
+            className={`p-4 sm:p-6 ${tileBg} ${tileBorder} border-2 ${tileShadow} rounded-2xl tile-hover ${className}`}
             style={{ ...style, minHeight: '100%' }}
         >
             {children}
@@ -72,8 +74,135 @@ const CustomStyles = () => {
         .font-sans {
             font-family: monospace; /* Blocky, digital feel */
         }
+        
+        /* Mobile optimizations */
+        @media (max-width: 640px) {
+            .tile-hover:hover {
+                transform: none !important; /* Disable hover effects on touch devices */
+            }
+            body {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+            input, textarea, button {
+                -webkit-user-select: text;
+                -khtml-user-select: text;
+                -moz-user-select: text;
+                -ms-user-select: text;
+                user-select: text;
+            }
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Art gallery enhancements */
+        .art-item {
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            transition: box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .art-item img {
+            transition: transform 0.3s ease;
+            will-change: transform;
+        }
+        
+        .art-item p {
+            transition: transform 0.3s ease;
+            will-change: transform;
+        }
+        
+        .art-item:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3) !important;
+        }
+        
+        /* Staggered animation classes for different slide directions */
+        .art-item:nth-child(4n+1) { /* Left slide */ }
+        .art-item:nth-child(4n+2) { /* Right slide */ }
+        .art-item:nth-child(4n+3) { /* Top slide */ }
+        .art-item:nth-child(4n+4) { /* Bottom slide */ }
+        
+        /* Enhanced blur effect for initial state */
+        .art-item {
+            filter: blur(0px);
+        }
+        
+        /* Art gallery grid responsive improvements */
+        @media (min-width: 1280px) {
+            .art-item:nth-child(6n+1) { /* First in row */ }
+            .art-item:nth-child(6n+6) { /* Last in row */ }
+        }
+        
+        /* Parallax background effect */
+        .tile-hover {
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(34, 211, 238, 0.2);
+            border: 2px solid rgba(34, 211, 238, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .scroll-indicator:hover {
+            background: rgba(34, 211, 238, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .scroll-indicator::after {
+            content: '↓';
+            color: #22d3ee;
+            font-size: 20px;
+            font-weight: bold;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        /* Hide scroll indicator on mobile */
+        @media (max-width: 768px) {
+            .scroll-indicator {
+                display: none;
+            }
+        }
+        
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
         ::-webkit-scrollbar-track {
             background: ${scrollbarTrack};
@@ -238,11 +367,11 @@ function Header() {
     const { tileAccentBorder } = useThemeClasses();
 
     return (
-        <header className={`flex flex-col md:flex-row justify-between items-start md:items-center border-b-2 ${tileAccentBorder} mb-3 pb-3 animate-fadeInUp`}>
+        <header className={`flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 ${tileAccentBorder} mb-3 pb-3 animate-fadeInUp`}>
             {/* --- Header Start --- */}
             <Link to="/adminKrish" className="hover:opacity-80 transition-opacity flex items-center gap-3">
-                <Sparkles className={`w-10 h-10 text-cyan-400 animate-pulse-glow`} />
-                <h1 className={`text-4xl font-extrabold mb-2 md:mb-0 bg-white/80 bg-clip-text text-transparent cursor-pointer`}>
+                <Sparkles className={`w-8 h-8 sm:w-10 sm:h-10 text-cyan-400 animate-pulse-glow`} />
+                <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-2 sm:mb-0 bg-white/80 bg-clip-text text-transparent cursor-pointer`}>
                     MY-WORLD
                 </h1>
             </Link>
@@ -260,17 +389,17 @@ function Hero({ profile }) {
     return (
 
 
-        <Tile className="col-span-1 md:col-span-3 grid grid-cols-1 sm:grid-cols-4 gap-6">
+        <Tile className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {/* --- Hero Start --- */}
             {/* --- Profile Image, Decoding Name, Title (ProfileBlock) Start --- */}
-            <div className="sm:col-span-1 flex flex-col items-center justify-center animate-slideInLeft">
+            <div className="md:col-span-1 flex flex-col items-center justify-center">
                 <img 
                     src={profile.profileImage}
                     alt={profile.name} 
-                    className={`w-32 h-32 border-2 object-cover bg-black rounded-xl backdrop-blur-sm ring-4 shadow-xl animate-float transition-all duration-300 hover:shadow-cyan-400/20`} 
+                    className={`w-24 h-24 sm:w-32 sm:h-32 border-2 object-cover bg-black rounded-xl backdrop-blur-sm ring-4 shadow-xl animate-float transition-all duration-300 hover:shadow-cyan-400/20 profile-image`} 
                     onError={(e) => { e.target.onerror = null; e.target.src = "./public/krishhh.jpg"; }}
                 />
-                <h2 className={`text-xl font-bold mt-4 ${mainText}`}>
+                <h2 className={`text-lg sm:text-xl font-bold mt-4 ${mainText}`}>
                     <DecodingText text={profile.name} speed={100} />
                 </h2>
                 <p className={`text-sm text-slate-400 italic text-center`}>{profile.title}</p>
@@ -287,19 +416,19 @@ function Hero({ profile }) {
             {/* --- ProfileBlock End --- */}
 
             {/* --- Biography, Contact, and Social Links --- */}
-            <div className="sm:col-span-3 animate-slideInRight">
-                <h3 className={`text-2xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-3 ${mainText} bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent`}>BIOGRAPHY BLOCK</h3>
-                <p className={`whitespace-pre-wrap ${mainText} mb-4`}>{profile.bio}</p>
+            <div className="md:col-span-2">
+                <h3 className={`text-xl sm:text-2xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-3 ${mainText} bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent`}>BIOGRAPHY BLOCK</h3>
+                <p className={`whitespace-pre-wrap ${mainText} mb-4 text-sm sm:text-base`}>{profile.bio}</p>
                 
                 {/* Contact and Location */}
-                <div className={`flex flex-wrap items-center gap-4 text-sm font-semibold mb-4 ${mainText}`}>
+                <div className={`flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-2 sm:gap-4 text-sm font-semibold mb-4 ${mainText}`}>
                     <span className={`flex items-center gap-1 text-rose-400`}><MapPin className="w-4 h-4"/> {profile.location}</span>
                     <a href={`mailto:${profile.email}`} className={`flex items-center gap-1 text-cyan-300 hover:text-cyan-200`}>
                         <Mail className="w-4 h-4"/> {profile.email}
                     </a>
                 </div>
                 
-                <h4 className={`text-lg font-bold border-b-2 ${tileAccentBorder} pb-1 mb-2 ${mainText} bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent`}>CRITICAL LINKS:</h4>
+                <h4 className={`text-base sm:text-lg font-bold border-b-2 ${tileAccentBorder} pb-1 mb-2 ${mainText} bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent`}>CRITICAL LINKS:</h4>
                 <div className="flex flex-wrap gap-3">
                     <a 
                         href={profile.github} 
@@ -330,14 +459,14 @@ function Skills({ skills }) {
     const { mainText, tileAccentBorder, tileAccent } = useThemeClasses();
 
     return (
-        <Tile className="col-span-1 md:col-span-1">
+        <Tile className="h-fit">
             {/* --- Skills Start --- */}
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent`}><Zap className="w-5 h-5"/> SKILL BLOCKS</h3>
+            <h3 className={`text-lg sm:text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent`}><Zap className="w-4 h-4 sm:w-5 sm:h-5"/> SKILL BLOCKS</h3>
             <ul className="space-y-2">
                 {skills.map(skill => (
-                    <li key={skill.id} className={`p-3 ${tileAccent} border ${tileAccentBorder} rounded-lg shadow-md flex justify-between items-center hover:bg-white/15 transition-all duration-200`}>
+                    <li key={skill.id} className={`p-3 ${tileAccent} border ${tileAccentBorder} rounded-lg shadow-md flex justify-between items-center hover:bg-white/15 transition-all duration-200 skill-item`}>
                         <span className={`font-semibold ${mainText}`}>{skill.icon} {skill.name}</span>
-                        <span className={`text-xs px-2 py-1 border border-emerald-400/40 text-white bg-emerald-500/20 backdrop-blur-sm rounded-md font-semibold`}>
+                        <span className={`text-xs px-2 py-1 border border-emerald-400/40 text-white bg-emerald-500/20 backdrop-blur-sm rounded-md font-semibold skill-level`}>
                             {skill.level}
                         </span>
                     </li>
@@ -356,14 +485,14 @@ function ExperienceTimeline({ experiences }) {
     }, [experiences]);
 
     return (
-        <Tile className="md:col-span-2">
+        <Tile className="h-fit">
             {/* --- ExperienceTimeline Start --- */}
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent`}>
-                <Briefcase className="w-5 h-5"/> EXPERIENCE & EDUCATION LOGS
+            <h3 className={`text-lg sm:text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent`}>
+                <Briefcase className="w-4 h-4 sm:w-5 sm:h-5"/> EXPERIENCE & EDUCATION LOGS
             </h3>
             <div className="space-y-6">
                 {sortedExperiences.map((item) => (
-                    <div key={item.id} className={`relative p-4 border-l-2 ${tileAccentBorder}`}>
+                    <div key={item.id} className={`relative p-4 border-l-2 ${tileAccentBorder} timeline-item`}>
                         {/* Timeline Pin (Block) */}
                         <div className={`absolute -left-3 top-0 w-6 h-6 border-2 border-white bg-green-500/80 backdrop-blur-sm rounded-full flex items-center justify-center`}>
                             <span className={`w-2 h-2 bg-white block rounded-full`}></span>
@@ -389,12 +518,12 @@ function Projects({ projects, title, icon, className = "" }) {
     const { mainText, tileAccentBorder, tileAccent, activeClass } = useThemeClasses();
 
     return (
-        <Tile className={`col-span-1 ${className}`}>
+        <Tile className={`h-fit`}>
             {/* --- Projects Start --- */}
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent`}>{icon} {title.toUpperCase()} PROJECTS </h3>
+            <h3 className={`text-lg sm:text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent`}>{icon} {title.toUpperCase()} PROJECTS </h3>
             <div className="space-y-4">
                 {projects.map(project => (
-                    <div key={project.id} className={`p-4 ${tileAccent} border ${tileAccentBorder} rounded-xl shadow-md hover:bg-white/15 transition-all duration-200`}>
+                    <div key={project.id} className={`p-4 ${tileAccent} border ${tileAccentBorder} rounded-xl shadow-md hover:bg-white/15 transition-all duration-200 project-card`}>
                         <h4 className={`text-lg font-bold ${mainText}`}>{project.title}</h4>
                         <p className={`text-sm text-slate-300 my-2`}>{project.description}</p>
                         
@@ -446,12 +575,12 @@ function ArtGallery({ artProjects }) {
     const { mainText, tileAccentBorder, tileAccent } = useThemeClasses();
 
     return (
-        <Tile className="col-span-1 md:col-span-4">
+        <Tile className="h-fit">
             {/* --- ArtGallery Start --- */}
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-pink-400 to-orange-400 bg-clip-text text-transparent`}><Palette className="w-5 h-5"/> MY SKETCHES GALLERY</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <h3 className={`text-lg sm:text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-pink-400 to-orange-400 bg-clip-text text-transparent`}><Palette className="w-4 h-4 sm:w-5 sm:h-5"/> MY SKETCHES GALLERY</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
                 {artProjects.map(art => (
-                    <div key={art.id} className={`p-3 ${tileAccent} border ${tileAccentBorder} rounded-xl shadow-md hover:bg-white/15 transition-all duration-200`}>
+                    <div key={art.id} className={`p-3 ${tileAccent} border ${tileAccentBorder} rounded-xl shadow-md hover:bg-white/15 transition-all duration-200 art-item`}>
                         <img 
                             src={art.image} 
                             alt={art.title} 
@@ -542,9 +671,9 @@ function WorkQueryBlock({ setQueries }) {
     }
 
     return (
-        <Tile className="col-span-1 md:col-span-4 mt-6">
-            <h3 className={`text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent`}>
-                <MessageSquare className="w-5 h-5"/> WORK QUERY / SUGGETIONS
+        <Tile className="h-fit">
+            <h3 className={`text-lg sm:text-xl font-extrabold border-b-2 ${tileAccentBorder} pb-2 mb-4 flex items-center gap-2 ${mainText} bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent`}>
+                <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5"/> WORK QUERY / SUGGETIONS
             </h3>
             
             <p className={`text-sm text-slate-400 mb-4`}>
@@ -595,7 +724,7 @@ function WorkQueryBlock({ setQueries }) {
                     />
                 </div>
 
-                <div className="flex justify-between items-center pt-2">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-2 gap-3">
                     {statusMessage && (
                         <p className={`text-sm font-medium border-2 p-3 rounded-lg ${statusClasses} backdrop-blur-sm`}>
                             {statusMessage}
@@ -604,7 +733,7 @@ function WorkQueryBlock({ setQueries }) {
                     <button 
                         type="submit"
                         disabled={isPending}
-                        className={`flex items-center gap-2 px-5 py-2.5 text-base ml-auto rounded-lg font-semibold border border-white/60 ${activeClass} ${buttonPrimary}`}
+                        className={`flex items-center justify-center gap-2 px-5 py-2.5 text-base rounded-lg font-semibold border border-white/60 ${activeClass} ${buttonPrimary} w-full sm:w-auto sm:ml-auto`}
                     >
                         {isPending ? <Loader2 className="w-4 h-4 animate-spin"/> : <Mail className="w-5 h-5"/>} {buttonText}
                     </button>
@@ -627,29 +756,392 @@ function Footer({ email }) {
 
 
 function PortfolioView({ data, setQueries }) {
-    return (
-        <div className="max-w-7xl mx-auto py-1">
-            {/* --- PortfolioView Start --- */}
-            <Header profile={data.portfolioData} />
-            
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-min">
-                <Hero profile={data.portfolioData} />
-                <Skills skills={data.skills} />
-                <Projects 
-                    projects={data.projects} 
-                    title="Code" 
-                    icon={<Code className="w-5 h-5"/>} 
-                    className="md:col-span-2"
-                />
-                
-                <ExperienceTimeline experiences={data.experiences} />
-                
-                <ArtGallery artProjects={data.artProjects} />
+    const containerRef = useRef(null);
+    const headerRef = useRef(null);
+    const heroRef = useRef(null);
+    const skillsRef = useRef(null);
+    const projectsRef = useRef(null);
+    const experienceRef = useRef(null);
+    const artRef = useRef(null);
+    const queryRef = useRef(null);
+    const footerRef = useRef(null);
 
-                <WorkQueryBlock setQueries={setQueries} />
+    useEffect(() => {
+        // Register ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+        
+        const isMobile = window.innerWidth < 768;
+        
+        const tl = gsap.timeline();
+        
+        // Initial setup - hide elements
+        gsap.set([headerRef.current, heroRef.current, skillsRef.current, projectsRef.current, experienceRef.current, artRef.current, queryRef.current, footerRef.current], {
+            opacity: 0,
+            y: isMobile ? 20 : 50
+        });
+
+        // Adjust animation settings for mobile
+        const duration = isMobile ? 0.5 : 0.8;
+        const staggerDelay = isMobile ? 0.1 : 0.2;
+
+        // Animate header first
+        tl.to(headerRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: duration,
+            ease: "power2.out"
+        })
+        // Animate hero section
+        .to(heroRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: duration,
+            ease: "power2.out"
+        }, isMobile ? "-=0.3" : "-=0.4")
+        // Stagger animate the grid items
+        .to([skillsRef.current, projectsRef.current, experienceRef.current], {
+            opacity: 1,
+            y: 0,
+            duration: duration * 0.8,
+            stagger: staggerDelay,
+            ease: "power2.out"
+        }, isMobile ? "-=0.3" : "-=0.4")
+        // Animate art gallery
+        .to(artRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: duration,
+            ease: "power2.out"
+        }, isMobile ? "-=0.1" : "-=0.2")
+        // Add a subtle loading pulse to art items initially
+        .to('.art-item', {
+            scale: 1.02,
+            duration: 0.5,
+            ease: "power2.inOut",
+            yoyo: true,
+            repeat: 1
+        }, "-=0.5")
+        // Animate query block
+        .to(queryRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: duration * 0.8,
+            ease: "power2.out"
+        }, isMobile ? "-=0.3" : "-=0.4")
+        // Animate footer
+        .to(footerRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: duration * 0.8,
+            ease: "power2.out"
+        }, isMobile ? "-=0.1" : "-=0.2");
+
+        // Add scroll-triggered animations for page opening effect
+        if (!isMobile) {
+            // Animate skill items as they come into view
+            gsap.utils.toArray('.skill-item').forEach((item, index) => {
+                gsap.fromTo(item, 
+                    { 
+                        opacity: 0, 
+                        x: index % 2 === 0 ? -50 : 50,
+                        scale: 0.8 
+                    },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        scale: 1,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top 80%",
+                            end: "bottom 20%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // Animate project cards with stagger
+            gsap.utils.toArray('.project-card').forEach((card, index) => {
+                gsap.fromTo(card,
+                    { 
+                        opacity: 0, 
+                        y: 60,
+                        rotateY: -15
+                    },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        rotateY: 0,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: card,
+                            start: "top 85%",
+                            end: "bottom 15%",
+                            toggleActions: "play none none reverse"
+                        },
+                        delay: index * 0.1
+                    }
+                );
+            });
+
+            // Animate experience timeline items
+            gsap.utils.toArray('.timeline-item').forEach((item, index) => {
+                gsap.fromTo(item,
+                    { 
+                        opacity: 0, 
+                        x: -100,
+                        scale: 0.9
+                    },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        scale: 1,
+                        duration: 1,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top 75%",
+                            end: "bottom 25%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // Animate art gallery items with sophisticated slide effects
+            gsap.utils.toArray('.art-item').forEach((item, index) => {
+                const row = Math.floor(index / 6); // Assuming 6 items per row on xl screens
+                const col = index % 6;
+                
+                // Create different slide directions based on position
+                let slideDirection = { x: 0, y: 0 };
+                let rotation = 0;
+                
+                if (row % 2 === 0) {
+                    // Even rows: slide from left, right, top, bottom alternately
+                    if (col % 4 === 0) slideDirection = { x: -100, y: 0 }; // Left
+                    else if (col % 4 === 1) slideDirection = { x: 100, y: 0 }; // Right  
+                    else if (col % 4 === 2) slideDirection = { x: 0, y: -100 }; // Top
+                    else slideDirection = { x: 0, y: 100 }; // Bottom
+                } else {
+                    // Odd rows: diagonal slides with rotation
+                    if (col % 3 === 0) {
+                        slideDirection = { x: -80, y: -80 };
+                        rotation = -15;
+                    } else if (col % 3 === 1) {
+                        slideDirection = { x: 80, y: -80 };
+                        rotation = 15;
+                    } else {
+                        slideDirection = { x: 0, y: 80 };
+                        rotation = 5;
+                    }
+                }
+                
+                gsap.fromTo(item,
+                    { 
+                        opacity: 0, 
+                        x: slideDirection.x,
+                        y: slideDirection.y,
+                        rotation: rotation,
+                        scale: 0.7,
+                        filter: 'blur(10px)'
+                    },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        y: 0,
+                        rotation: 0,
+                        scale: 1,
+                        filter: 'blur(0px)',
+                        duration: 1.2,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            start: "top 95%",
+                            end: "bottom 5%",
+                            toggleActions: "play none none reverse"
+                        },
+                        delay: (row * 0.1) + (col * 0.05) // Staggered delay based on position
+                    }
+                );
+            });
+
+            // Add hover effects for art gallery items
+            gsap.utils.toArray('.art-item').forEach((item) => {
+                const image = item.querySelector('img');
+                const title = item.querySelector('p:first-of-type');
+                const type = item.querySelector('p:last-of-type');
+                
+                item.addEventListener('mouseenter', () => {
+                    gsap.to(item, {
+                        scale: 1.05,
+                        y: -10,
+                        duration: 0.3,
+                        ease: "power2.out",
+                        boxShadow: "0 20px 40px rgba(0,0,0,0.3)"
+                    });
+                    gsap.to(image, {
+                        scale: 1.1,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                    gsap.to([title, type], {
+                        y: -2,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    gsap.to(item, {
+                        scale: 1,
+                        y: 0,
+                        duration: 0.3,
+                        ease: "power2.out",
+                        boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
+                    });
+                    gsap.to(image, {
+                        scale: 1,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                    gsap.to([title, type], {
+                        y: 0,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                });
+                
+                item.addEventListener('click', () => {
+                    gsap.to(item, {
+                        scale: 0.95,
+                        duration: 0.1,
+                        ease: "power2.out",
+                        yoyo: true,
+                        repeat: 1
+                    });
+                });
+            });
+        }
+
+        // Add hover animations only on desktop
+        if (!isMobile) {
+            const tiles = gsap.utils.toArray('.tile-hover');
+            tiles.forEach(tile => {
+                tile.addEventListener('mouseenter', () => {
+                    gsap.to(tile, {
+                        scale: 1.02,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                });
+                tile.addEventListener('mouseleave', () => {
+                    gsap.to(tile, {
+                        scale: 1,
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                });
+            });
+
+            // Floating animation for profile image
+            const profileImg = document.querySelector('.profile-image');
+            if (profileImg) {
+                gsap.to(profileImg, {
+                    y: -10,
+                    duration: 2,
+                    ease: "power2.inOut",
+                    yoyo: true,
+                    repeat: -1
+                });
+            }
+
+            // Pulse animation for skill levels
+            const skillLevels = gsap.utils.toArray('.skill-level');
+            skillLevels.forEach(level => {
+                gsap.to(level, {
+                    scale: 1.05,
+                    duration: 1.5,
+                    ease: "power2.inOut",
+                    yoyo: true,
+                    repeat: -1,
+                    delay: Math.random() * 2
+                });
+            });
+        }
+
+        // Hide scroll indicator on scroll
+        const handleScroll = () => {
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            if (scrollIndicator) {
+                if (window.scrollY > 100) {
+                    scrollIndicator.style.opacity = '0';
+                    scrollIndicator.style.pointerEvents = 'none';
+                } else {
+                    scrollIndicator.style.opacity = '1';
+                    scrollIndicator.style.pointerEvents = 'auto';
+                }
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        // Cleanup function
+        return () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    return (
+        <div ref={containerRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+            {/* --- PortfolioView Start --- */}
+            <div ref={headerRef}>
+                <Header profile={data.portfolioData} />
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 auto-rows-min">
+                <div ref={heroRef} className="lg:col-span-8">
+                    <Hero profile={data.portfolioData} />
+                </div>
+                <div ref={skillsRef} className="lg:col-span-4">
+                    <Skills skills={data.skills} />
+                </div>
+                <div ref={projectsRef} className="lg:col-span-6">
+                    <Projects 
+                        projects={data.projects} 
+                        title="Code" 
+                        icon={<Code className="w-5 h-5"/>} 
+                    />
+                </div>
+                
+                <div ref={experienceRef} className="lg:col-span-6">
+                    <ExperienceTimeline experiences={data.experiences} />
+                </div>
+                
+                <div ref={artRef} className="lg:col-span-12">
+                    <ArtGallery artProjects={data.artProjects} />
+                </div>
+
+                <div ref={queryRef} className="lg:col-span-12">
+                    <WorkQueryBlock setQueries={setQueries} />
+                </div>
             </div>
 
-            <Footer email={data.portfolioData.email} />
+            <div ref={footerRef}>
+                <Footer email={data.portfolioData.email} />
+            </div>
+            
+            {/* Scroll Indicator */}
+            <div 
+                className="scroll-indicator"
+                onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+                title="Scroll to explore"
+            ></div>
+            
             {/* --- PortfolioView End --- */}
         </div>
     );
